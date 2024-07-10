@@ -4,8 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% block head %}{% endblock %}
 </head>
 <body>
-    <h1>Welcome to the Home Page</h1>
+    <header class="tabsHeader">
+        <nav class="navbar">
+          <a href="..." class="active">Home</a>
+          <a href="about.html">About Developer</a>
+          <a href="...">Contact Us</a>
+          <a href="...">Log in</a>
+        </nav>
+      </header>
+    <h1>HELLO WORLD THIS IS TAMIM!</h1>
+    {% block body %}{% endblock %}
 </body>
 </html>
