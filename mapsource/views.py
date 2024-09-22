@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint
+from flask import render_template, Blueprint, url_for
 
 bp = Blueprint(
     "viewsc",
@@ -12,3 +12,8 @@ bp = Blueprint(
 @bp.route("/")
 def greetings():
     return render_template("home.html")
+
+
+@bp.route("/about")
+def about():
+    return render_template("about.html")

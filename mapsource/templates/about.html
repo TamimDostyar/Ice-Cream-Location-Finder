@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% extends "home.html" %}
+    {% block title %}About Developer{% endblock %}
+    {% block head %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% endblock %}
+</head>
+<body>
+    {% block body %}
+    <div id="content">
+        <h1>About the Developer</h1>
+        <p>Information about the developer goes here!</p>
+    </div>
+    {% endblock %}
+    <div id="footer">
+      {% block footer %}
+      &copy; Copyright 2010 by <a href="http://domain.invalid/">you</a>.
+      {% endblock %}
+    </div>
+</body>
+</html>
