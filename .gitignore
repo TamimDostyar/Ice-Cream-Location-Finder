@@ -9,3 +9,6 @@ dist/
 htmlcov/
 .tox/
 docs/_build/
+__pycache__/
+**/__pycache__/
+tree --gitignore
