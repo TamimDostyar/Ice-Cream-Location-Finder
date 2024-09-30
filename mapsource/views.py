@@ -5,7 +5,7 @@ bp = Blueprint(
     __name__,
     static_folder="static",
     template_folder="templates",
-    url_prefix="/",  # or any other prefix you intend to use
+    url_prefix="/",
 )
 
 
@@ -17,3 +17,8 @@ def greetings():
 @bp.route("/about")
 def about():
     return render_template("about.html")
+
+
+@bp.route("/maps")
+def maps():
+    return render_template("maps.html")
