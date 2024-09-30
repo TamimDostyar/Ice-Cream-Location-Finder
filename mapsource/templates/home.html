@@ -3,20 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-    {% block head %}{% endblock %}
+    <title>My Background Video</title>
+    <link href="./static/normalize.css" rel="stylesheet">
+    <link href="./static/style.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
-    <header class="tabsHeader">
-        <nav class="navbar">
-          <a href="..." class="active">Home</a>
-          <a href="about.html">About Developer</a>
-          <a href="...">Contact Us</a>
-          <a href="...">Log in</a>
-        </nav>
-      </header>
-    <h1>HELLO WORLD THIS IS TAMIM!</h1>
-    {% block body %}{% endblock %}
+
+    <!-- Hero Section with Button -->
+    <div id="hero">
+        <div>
+            <nav id="no-mask">
+                <ul class="list">
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Map</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="texture"></div>
+        <video loop muted autoplay preload="auto" id="background-video">
+            <source src="./static/images/icecream.mp4" type="video/mp4">
+        </video>
+        <div class="caption">
+            <h1>Find Ice Cream Shops Nearby</h1>
+            <!-- Button -->
+            <a href="#" class="action-button" id="action-button">Click Here</a>
+        </div>
+        
+    </div>
+
+    <script src="./js/script.js"></script>
 </body>
 </html>
