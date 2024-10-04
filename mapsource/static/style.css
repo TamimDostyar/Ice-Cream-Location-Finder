@@ -163,3 +163,14 @@ a {
         margin-left: 20px;
     }
 }
+
+@import "https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css";
+
+.box {
+    border: 2px solid #000;
+    width: 130%;
+    height: 80vh;
+    position: relative;
+    left: 8%;
+    top: 8%;
+}
