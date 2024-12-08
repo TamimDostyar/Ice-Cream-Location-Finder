@@ -15,3 +15,10 @@ const displayItem = (items) => {
         return `<div>${title}</div>`; // Return the HTML for each item
     }).join(''); // Join the array of HTML strings into one string
 };
+
+
+function iceCreamSelector(url) {
+    let myiceCreamSelector = document.querySelector(".iceCreamType")
+
+
+}
