@@ -6,9 +6,18 @@
     <title>My Background Video</title>
     <link href="./static/normalize.css" rel="stylesheet">
     <link href="./static/style.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body>
+    <!-- Navigation Bar -->
+    <nav>
+        <div class="container">
+            <ul class="list">
+                <li><a href="{{ url_for('viewsc.greetings') }}">Home</a></li>
+                <li><a href="{{ url_for('viewsc.edit_web') }}">Edit Web</a></li>
+                <li><a href="{{ url_for('viewsc.maps_view') }}">Continue as User</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <!-- Hero Section with Button -->
     <div id="hero">
@@ -21,8 +30,9 @@
         <div class="caption">
             <h1>Find Ice Cream Shops Nearby</h1>
             <div class="button-container">
-                <a href="{{ url_for('viewsc.login') }}" class="action-button" id="login-button">Login</a>
+                <a href="{{ url_for('viewsc.maps_view') }}" class="action-button" id="guest-button">Explore</a>
                 <a href="{{ url_for('viewsc.maps_view') }}" class="action-button" id="guest-button">Continue as Guest</a>
+                <a href="{{ url_for('auth.login') }}" class="action-button" id="admin-button">Continue as Admin</a>
             </div>
         </div>
     </div>
