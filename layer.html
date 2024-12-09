@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenLayers Map with City Search</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/ol/ol.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ol3/4.6.5/ol.js"></script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        #map {
+            width: 100%;
+            height: 500px;
+            background-color: #f0f0f0;
+        }
+        #search-container {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: white;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+        #search-input {
+            width: 200px;
+            padding: 5px;
+        }
+        #search-button {
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div id="search-container">
+        <input type="text" id="search-input" placeholder="Enter city name">
+        <button id="search-button">Search</button>
+    </div>
+    <div id="map"></div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            console.log('DOM fully loaded and parsed');
+            
+            if (typeof ol === 'undefined') {
+                console.error('OpenLayers is not loaded');
+                return;
+            }
+
+            const map = new ol.Map({
+                target: 'map',
+                layers: [
+                    new ol.layer.Tile({
+                        source: new ol.source.OSM()
+                    })
+                ],
+                view: new ol.View({
+                    center: ol.proj.fromLonLat([0, 0]),
+                    zoom: 2
+                })
+            });
+
+            const searchInput = document.getElementById('search-input');
+            const searchButton = document.getElementById('search-button');
+
+            searchButton.addEventListener('click', () => {
+                const cityName = searchInput.value.trim();
+                if (!cityName) {
+                    alert('Please enter a city name.');
+                    return;
+                }
+
+                fetch(`https://nominatim.openstreetmap.org/search?city=${cityName}&format=json`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            alert('City not found.');
+                            return;
+                        }
+
+                        const { lon, lat } = data[0];
+                        const coordinates = ol.proj.fromLonLat([parseFloat(lon), parseFloat(lat)]);
+
+                        map.getView().setCenter(coordinates);
+                        map.getView().setZoom(10);
+
+                        const markerLayer = new ol.layer.Vector({
+                            source: new ol.source.Vector({
+                                features: [
+                                    new ol.Feature({
+                                        geometry: new ol.geom.Point(coordinates)
+                                    })
+                                ]
+                            }),
+                            style: new ol.style.Style({
+                                image: new ol.style.Circle({
+                                    radius: 8,
+                                    fill: new ol.style.Fill({ color: 'red' }),
+                                    stroke: new ol.style.Stroke({ color: 'white', width: 2 })
+                                })
+                            })
+                        });
+
+                        map.getLayers().forEach(layer => {
+                            if (layer instanceof ol.layer.Vector) {
+                                map.removeLayer(layer);
+                            }
+                        });
+
+                        map.addLayer(markerLayer);
+                    })
+                    .catch(error => console.error('Error fetching city data:', error));
+            });
+        });
+    </script>
+</body>
+</html>
