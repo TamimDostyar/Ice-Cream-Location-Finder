@@ -1,37 +1,38 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@1.0.2/css/bulma.min.css"
-    />
-    <link href="./static/style.css" rel="stylesheet">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maps</title>
+    <link href="./static/style.css" rel="stylesheet">
+</head>
+<body>
+    <div id="hero">
+        <video loop muted autoplay preload="auto" id="background-video">
+            <source src="./static/images/icecream.mp4" type="video/mp4">
+        </video>
+        <div class="content">
+            <h1>Explore Nearby Ice Cream Shops</h1>
+            <div id="map-container">
+                <!-- Map display will go here -->
+            </div>
 
-    <style>
-
-    </style>
-  </head>
-
-  <body>
-    <div class="columns">
-      <div class="column is-3">
-        <div class="box">
-          <a>This is just a test</a>
-          <div class="searchBar" id="search">
-              <input type="text" placeholder="Your Location">
-              <select name="iceCreamType" id="cars"></select>
-              <button class="button is-primary" id="searchButton" onlick>Search</button>
-          </div>
+            <!-- Guest Warning Section -->
+            <div id="guest-warning" style="display: none;" class="guest-warning">
+                <p>Sign up or log in to access more features like search and personalized recommendations!</p>
+                <button onclick="window.location.href='{{ url_for('auth.register') }}'">Sign Up</button>
+                <button onclick="window.location.href='{{ url_for('auth.login') }}'">Log In</button>
+            </div>
         </div>
-      </div>
     </div>
-    <video loop muted autoplay preload="auto" id="background-video">
-      <source src="./static/images/earth.mp4" type="video/mp4">
-  </video>
-    <script src="./static/script.js"></script>
-  </body>
-  <footer></footer>
+
+    <script>
+        // Check if the user is logged in
+        const isLoggedIn = {{ 'true' if current_user.is_authenticated else 'false' }};
+        
+        if (isLoggedIn === 'false') {
+            document.getElementById('guest-warning').style.display = 'block';
+        }
+    </script>
+</body>
 </html>

@@ -13,13 +13,6 @@
     <!-- Hero Section with Button -->
     <div id="hero">
         <div>
-            <nav id="no-mask">
-                <ul class="list">
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Map</a></li>
-                    <li><a href="#">Contact</a></li>
-                </ul>
-            </nav>
         </div>
         <div class="texture"></div>
         <video loop muted autoplay preload="auto" id="background-video">
@@ -27,11 +20,11 @@
         </video>
         <div class="caption">
             <h1>Find Ice Cream Shops Nearby</h1>
-            <a href="{{ url_for('viewsc.maps') }}" class="action-button" id="action-button">Click Here</a>
-
+            <div class="button-container">
+                <a href="{{ url_for('viewsc.login') }}" class="action-button" id="login-button">Login</a>
+                <a href="{{ url_for('viewsc.maps_view') }}" class="action-button" id="guest-button">Continue as Guest</a>
+            </div>
         </div>
-        
-        
     </div>
     <script src="./js/script.js"></script>
 </body>

@@ -1,13 +1,15 @@
 from flask import Flask
-from . import views
-from flask_bootstrap import Bootstrap
-import time
-from datetime import timedelta
+from flask_sqlalchemy import SQLAlchemy
+import os
+from dotenv import load_dotenv
 
-app = Flask(__name__)
-Bootstrap(app)
-app.config.from_mapping(SECRET_KEY="source_code")
+load_dotenv()  # Load environment variables from .env file
 
-# Register the blueprint
-app.register_blueprint(views.bp)
-app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(hours=8)
+db = SQLAlchemy()
+
+def create_app():
+    app = Flask(__name__)
+
+    # Load environment variables
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv(
