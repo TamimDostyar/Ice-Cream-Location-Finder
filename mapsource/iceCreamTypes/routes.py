@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for
 from .models import IceCream, db
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 ice_cream_bp = Blueprint("ice_cream_bp", __name__)
 
@@ -38,7 +38,9 @@ def get_icecreams():
 @login_required
 def admin_view():
     icecreams = IceCream.query.all()
-    return render_template("admin.html", icecreams=icecreams, current_user=current_user)
+    return render_template(
+        "edit_web.html", icecreams=icecreams, current_user=current_user
+    )
 
 
 @ice_cream_bp.route("/add_icecream_form", methods=["POST"])
