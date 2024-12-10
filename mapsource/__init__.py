@@ -1,12 +1,11 @@
+# __init__.py
 from flask import Flask
 from dotenv import load_dotenv
 import os
-
+from flask_migrate import Migrate
 from .db import db
 
 load_dotenv()
-
-from flask_migrate import Migrate
 
 
 def create_app():
@@ -14,8 +13,8 @@ def create_app():
     app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
     app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("SQLALCHEMY_DATABASE_URI")
 
-    migrate = Migrate(app, db)
     db.init_app(app)
+    migrate = Migrate(app, db)
 
     with app.app_context():
         from .loginP import models

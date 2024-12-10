@@ -1,95 +1,74 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Signup</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f7f7f7;
-            font-family: Arial, sans-serif;
-        }
-        .signup-container {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            max-width: 400px;
-            width: 100%;
-        }
-        .signup-container h1 {
-            text-align: center;
-            margin-bottom: 20px;
-            color: #333;
-        }
-        .signup-container input {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        .signup-container button {
-            width: 100%;
-            padding: 10px;
-            background-color: #28a745;
-            border: none;
-            border-radius: 5px;
-            color: #fff;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        .signup-container button:hover {
-            background-color: #218838;
-        }
-        .flash-message {
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        .flash-message.error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        .flash-message.success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        .login {
-            text-align: center;
-            margin-top: 10px;
-        }
-        .login button {
-            background-color: #007BFF;
-        }
-        .login button:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
-<body>
-    <div class="signup-container">
-        <h1>Signup</h1>
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="flash-message {{ category }}">{{ message }}</div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
-        <form action="{{ url_for('auth.register') }}" method="post">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit">Create Account</button>
-        </form>
-        <div class="login">
-            <button onclick="window.location.href='{{ url_for('auth.login') }}'">Login</button>
+{% extends "base.html" %}
+
+{% block content %}
+<div class="section">
+    <div class="container">
+        <div class="columns is-centered">
+            <div class="column is-half">
+                <div class="box">
+                    <h1 class="title has-text-centered">Signup</h1>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="notification is-{{ category }}">{{ message }}</div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form id="signup-form" action="{{ url_for('auth.register') }}" method="post">
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control">
+                                <input class="input" type="text" name="username" placeholder="Username" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Email</label>
+                            <div class="control">
+                                <input class="input" type="email" name="email" placeholder="Email" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Password</label>
+                            <div class="control">
+                                <input class="input" type="password" name="password" placeholder="Password" required>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <label class="checkbox">
+                                    <input type="checkbox" id="regular-account-checkbox">
+                                    I confirm that I am creating a regular account.
+                                </label>
+                            </div>
+                        </div>
+                        <input type="hidden" name="is_admin" id="is_admin" value="false">
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-primary is-fullwidth" type="submit" id="submit-button" disabled>Create Account</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="field has-text-centered">
+                        <button class="button is-link" onclick="window.location.href='{{ url_for('auth.login') }}'">Login</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+
+<script>
+    document.getElementById('regular-account-checkbox').addEventListener('change', function() {
+        const submitButton = document.getElementById('submit-button');
+        const isAdminInput = document.getElementById('is_admin');
+        
+        if (this.checked) {
+            submitButton.disabled = false;
+            isAdminInput.value = "false";  // Ensure value is set to false
+        } else {
+            submitButton.disabled = true;
+            isAdminInput.value = "";  // Clear value if not checked
+        }
+    });
+</script>
+{% endblock %}

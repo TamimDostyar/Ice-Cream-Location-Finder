@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+<!-- Navigation Bar -->
 <nav>
     <div class="container">
         <ul class="list">
             <li><a href="{{ url_for('viewsc.greetings') }}">Home</a></li>
             <li><a href="{{ url_for('viewsc.edit_web') }}">Edit Web</a></li>
             <li><a href="{{ url_for('viewsc.maps_view') }}">Continue as User</a></li>
+            <li><a href="{{ url_for('viewsc.explore') }}">Explore</a></li>
         </ul>
     </div>
 </nav>

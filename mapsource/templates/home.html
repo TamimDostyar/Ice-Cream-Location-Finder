@@ -1,41 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Background Video</title>
-    <link href="./static/normalize.css" rel="stylesheet">
-    <link href="./static/style.css" rel="stylesheet">
-</head>
-<body>
-    <!-- Navigation Bar -->
-    <nav>
-        <div class="container">
-            <ul class="list">
-                <li><a href="{{ url_for('viewsc.greetings') }}">Home</a></li>
-                <li><a href="{{ url_for('viewsc.edit_web') }}">Edit Web</a></li>
-                <li><a href="{{ url_for('viewsc.maps_view') }}">Continue as User</a></li>
-            </ul>
-        </div>
-    </nav>
+{% extends "base.html" %}
 
-    <!-- Hero Section with Button -->
-    <div id="hero">
-        <div>
-        </div>
-        <div class="texture"></div>
-        <video loop muted autoplay preload="auto" id="background-video">
-            <source src="./static/images/icecream.mp4" type="video/mp4">
-        </video>
-        <div class="caption">
-            <h1>Find Ice Cream Shops Nearby</h1>
-            <div class="button-container">
-                <a href="{{ url_for('viewsc.maps_view') }}" class="action-button" id="guest-button">Explore</a>
-                <a href="{{ url_for('viewsc.maps_view') }}" class="action-button" id="guest-button">Continue as Guest</a>
-                <a href="{{ url_for('auth.login') }}" class="action-button" id="admin-button">Continue as Admin</a>
-            </div>
+{% block content %}
+<!-- Hero Section with Button -->
+<div id="hero">
+    <div>
+    </div>
+    <div class="texture"></div>
+    <video loop muted autoplay preload="auto" id="background-video">
+        <source src="./static/images/icecream.mp4" type="video/mp4">
+    </video>
+    <div class="caption">
+        <h1>Find Ice Cream Shops Nearby</h1>
+        <div class="button-container">
+            <a href="{{ url_for('viewsc.explore') }}" class="action-button" id="guest-button">Explore</a>
+            <a href="{{ url_for('auth.login') }}" class="action-button" id="admin-button">Continue as Admin</a>
         </div>
     </div>
-    <script src="./js/script.js"></script>
-</body>
-</html>
+</div>
+{% endblock %}

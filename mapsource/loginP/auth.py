@@ -32,8 +32,13 @@ def register():
         hashed_password = generate_password_hash(
             data["password"], method="pbkdf2:sha256"
         )
+        is_admin = data["is_admin"].lower() == "true"
+
         new_user = User(
-            username=data["username"], email=data["email"], password=hashed_password
+            username=data["username"],
+            email=data["email"],
+            password=hashed_password,
+            is_admin=is_admin,
         )
         db.session.add(new_user)
         db.session.commit()
@@ -49,7 +54,7 @@ def login():
         user = User.query.filter_by(username=data["username"]).first()
         if user and check_password_hash(user.password, data["password"]):
             login_user(user)
-            if user.username == "admin":
+            if user.is_admin:
                 return redirect(url_for("viewsc.admin_welcome"))
             return redirect(url_for("viewsc.maps_view"))
         flash("Login failed. Please check your username and password.", "error")
