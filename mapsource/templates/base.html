@@ -8,6 +8,7 @@
     <link href="/static/style.css" rel="stylesheet">
 </head>
 <body>
+    {% block navbar %}
     <nav class="navbar is-dark">
         <div class="container">
             <div class="navbar-brand">
@@ -20,9 +21,19 @@
             </div>
         </div>
     </nav>
+    {% endblock %}
+    
     <div class="content">
         {% block content %}
         {% endblock %}
     </div>
+    
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="/static/maps.js"></script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>

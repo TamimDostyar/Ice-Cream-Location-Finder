@@ -10,10 +10,10 @@ document.getElementById('searchBar').addEventListener('keyup', (e) => {
 
 const displayItem = (items) => {
     document.getElementById('root').innerHTML = items.map((item) => {
-        const { title } = item; // Destructure title from item
+        const { title } = item;
         console.log(item)
-        return `<div>${title}</div>`; // Return the HTML for each item
-    }).join(''); // Join the array of HTML strings into one string
+        return `<div>${title}</div>`;
+    }).join('');
 };
 
 

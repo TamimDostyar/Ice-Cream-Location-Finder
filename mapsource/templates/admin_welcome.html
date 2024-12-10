@@ -1,38 +1,61 @@
-{% block content %}
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>Admin Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
 </head>
-{% block navbar %}
-<nav class="navbar is-dark">
-    <div class="container">
-        <div class="navbar-brand">
-            <a class="navbar-item" href="{{ url_for('viewsc.greetings') }}">Home</a>
-            <div class="navbar-burger burger" data-target="navbarMenu">
-                <span></span>
-                <span></span>
-                <span></span>
+<body>
+    <nav class="navbar is-dark">
+        <div class="container">
+            <div class="navbar-brand">
+                <div class="navbar-burger burger" data-target="navbarMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="{{ url_for('viewsc.edit_web') }}">Edit Explore</a>
+                </div>
+                <div class="navbar-end">
+                    <a class="navbar-item" href="{{ url_for('auth.logout') }}">Logout</a>
+                </div>
             </div>
         </div>
-        <div id="navbarMenu" class="navbar-menu">
-            <div class="navbar-start">
-                <a class="navbar-item" href="{{ url_for('viewsc.edit_web') }}">Edit Web</a>
-                <a class="navbar-item" href="{{ url_for('viewsc.maps_view') }}">Continue as User</a>
-                <a class="navbar-item" href="{{ url_for('viewsc.explore') }}">Explore</a>
-            </div>
-            <div class="navbar-end">
-                <a class="navbar-item" href="{{ url_for('auth.logout') }}">Logout</a>
+    </nav>
+
+    <section class="section">
+        <div class="container">
+            <div class="box">
+                <h1 class="title">Welcome, {{ current_user.username }}!</h1>
+                <p>You are now logged in as an admin</p>
             </div>
         </div>
-    </div>
-</nav>
-{% endblock %}
-<section class="section">
-    <div class="container">
-        <div class="box">
-            <h1 class="title">Welcome, Admin!</h1>
-            <p>You are now logged in as an admin.</p>
-            <button class="button is-primary" onclick="window.location.href='{{ url_for('ice_cream_bp.admin_view') }}'">Go to Admin Dashboard</button>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <div id="map" style="height: 500px;"></div>
+            <button id="find-me" class="button is-info">Find My Location</button>
+            <button id="find-shops" class="button is-primary">Find Ice Cream Shops</button>
+            <div id="location-info" class="box" style="display: none; margin-top: 20px;"></div>
+            <div id="shop-list" class="box" style="display: none; margin-top: 20px;"></div>
         </div>
-    </div>
-</section>
-{% endblock %}
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
+    <script src="/static/maps.js"></script>
+    <script>
+        // Additional admin-specific JavaScript can go here
+    </script>
+</body>
+</html>
