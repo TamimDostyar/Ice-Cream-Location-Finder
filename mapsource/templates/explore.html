@@ -4,18 +4,33 @@
 
 {% block content %}
 <div id="hero">
-    <video loop muted autoplay preload="auto" id="background-video">
-        <source src="./static/images/icecream.mp4" type="video/mp4">
-    </video>
-    <div class="explore-container">
-        {% for icecream in icecreams %}
-        <div class="ice-cream-card">
-            <img src="{{ icecream.url }}" alt="{{ icecream.name }}">
-            <h2>{{ icecream.name }}</h2>
-            <p>{{ icecream.description }}</p>
-            <p><strong>${{ icecream.price }}</strong></p>
+    <div class="section">
+        <div class="container">
+            <div class="columns is-multiline">
+                {% for icecream in icecreams %}
+                <div class="column is-one-quarter">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="{{ icecream.url }}" alt="{{ icecream.name }}">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <div class="media">
+                                <div class="media-content">
+                                    <p class="title is-4">{{ icecream.name }}</p>
+                                </div>
+                            </div>
+                            <div class="content">
+                                <p>{{ icecream.description }}</p>
+                                <p><strong>${{ icecream.price }}</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
-        {% endfor %}
     </div>
 </div>
 {% endblock %}

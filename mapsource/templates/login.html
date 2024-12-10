@@ -7,7 +7,7 @@
             <div class="column is-half">
                 <div class="box">
                     <h1 class="title has-text-centered">Login</h1>
-                    <form action="{{ url_for('auth.login') }}" method="post">
+                    <form id="login-form" action="{{ url_for('auth.login') }}" method="post">
                         <div class="field">
                             <label class="label">Username</label>
                             <div class="control">
@@ -22,6 +22,18 @@
                         </div>
                         <div class="field">
                             <div class="control">
+                                <label class="radio">
+                                    <input type="radio" name="account_type" value="admin" required>
+                                    Admin
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="account_type" value="user" required>
+                                    User
+                                </label>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
                                 <button class="button is-primary is-fullwidth" type="submit">Login</button>
                             </div>
                         </div>
@@ -30,7 +42,7 @@
                         <p class="control">
                             <a href="{{ url_for('auth.forgot_password') }}">Forgot Password?</a>
                         </p>
-                    </div>
+                    </form>
                     <div class="field has-text-centered">
                         <button class="button is-link" onclick="window.location.href='{{ url_for('auth.register') }}'">Sign Up</button>
                     </div>

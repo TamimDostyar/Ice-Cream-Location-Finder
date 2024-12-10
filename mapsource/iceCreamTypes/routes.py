@@ -1,6 +1,5 @@
-# routes.py in iceCreamTypes
 from flask import Blueprint, request, jsonify, render_template, redirect, url_for
-from .models import IceCream, db  # Ensure correct import
+from .models import IceCream, db
 from flask_login import login_required
 
 ice_cream_bp = Blueprint("ice_cream_bp", __name__)

@@ -54,9 +54,14 @@ def login():
         user = User.query.filter_by(username=data["username"]).first()
         if user and check_password_hash(user.password, data["password"]):
             login_user(user)
-            if user.is_admin:
+            account_type = data.get("account_type")
+            if account_type == "admin" and user.is_admin:
                 return redirect(url_for("viewsc.admin_welcome"))
-            return redirect(url_for("viewsc.maps_view"))
+            elif account_type == "user" and not user.is_admin:
+                return redirect(url_for("viewsc.maps_view"))
+            else:
+                flash("Invalid account type selected for this user.", "error")
+                return redirect(url_for("auth.login"))
         flash("Login failed. Please check your username and password.", "error")
     return render_template("login.html")
 
