@@ -41,4 +41,4 @@ app = create_app()
 from mapsource.makeadmin import make_admin
 
 app = create_app()
-make_admin(app, "dostah01")
+make_admin(app, "tamimdostyar")

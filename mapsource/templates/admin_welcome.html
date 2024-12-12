@@ -22,6 +22,9 @@
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" href="{{ url_for('viewsc.edit_web') }}">Edit Explore</a>
+                    <a class="navbar-item" href="#home">Home</a>
+                    <a class="navbar-item" href="{{ url_for('auth.manage_accounts') }}">Manage Accounts</a>
+                    <a class="navbar-item" href="{{ url_for('auth.createAccount') }}">Register User</a>
                 </div>
                 <div class="navbar-end">
                     <a class="navbar-item" href="{{ url_for('auth.logout') }}">Logout</a>
@@ -42,8 +45,20 @@
     <section class="section">
         <div class="container">
             <div id="map" style="height: 500px;"></div>
-            <button id="find-me" class="button is-info">Find My Location</button>
-            <button id="find-shops" class="button is-primary">Find Ice Cream Shops</button>
+            <div class="field has-addons">
+                <p class="control">
+                    <input id="search-input" class="input" type="text" placeholder="Search city, state">
+                </p>
+                <p class="control">
+                    <button id="search-btn" class="button is-info">Search</button>
+                </p>
+                <p class="control">
+                    <button id="find-me" class="button is-info">Find My Location</button>
+                </p>
+                <p class="control">
+                    <button id="find-shops" class="button is-primary">Find Ice Cream Shops</button>
+                </p>
+            </div>
             <div id="location-info" class="box" style="display: none; margin-top: 20px;"></div>
             <div id="shop-list" class="box" style="display: none; margin-top: 20px;"></div>
         </div>
@@ -54,8 +69,5 @@
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <script src="/static/maps.js"></script>
-    <script>
-        // Additional admin-specific JavaScript can go here
-    </script>
 </body>
 </html>

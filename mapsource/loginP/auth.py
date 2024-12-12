@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import (
     LoginManager,
@@ -42,9 +42,36 @@ def register():
         )
         db.session.add(new_user)
         db.session.commit()
-        flash("Registration successful. Please log in.", "success")
-        return redirect(url_for("auth.login"))
+        flash("Registration successful.", "success")
+        return redirect(url_for("viewsc.admin_welcome"))
     return render_template("signup.html")
+
+
+@auth_bp.route("/createAccount", methods=["GET", "POST"], endpoint="createAccount")
+def createAccount():
+    if request.method == "POST":
+        data = request.form
+        existing_user = User.query.filter_by(email=data["email"]).first()
+        if existing_user:
+            flash("An account with this email already exists. Please log in.", "error")
+            return redirect(url_for("auth.register"))
+
+        hashed_password = generate_password_hash(
+            data["password"], method="pbkdf2:sha256"
+        )
+        is_admin = data["is_admin"].lower() == "true"
+
+        new_user = User(
+            username=data["username"],
+            email=data["email"],
+            password=hashed_password,
+            is_admin=is_admin,
+        )
+        db.session.add(new_user)
+        db.session.commit()
+        flash("Registration successful.", "success")
+        return redirect(url_for("viewsc.admin_welcome"))
+    return render_template("add_account.html")
 
 
 @auth_bp.route("/login", methods=["GET", "POST"], endpoint="login")
@@ -66,7 +93,7 @@ def login():
     return render_template("login.html")
 
 
-@auth_bp.route("/logout", methods=["GET"])
+@auth_bp.route("/logout", methods=["GET"], endpoint="logout")
 @login_required
 def logout():
     logout_user()
@@ -88,7 +115,67 @@ def forgot_password():
 
 
 @auth_bp.route(
-    "/reset_password/<token>", methods=["GET", "POST"], endpoint="reset_password"
+    "/reset_password/<token>", methods=["GET", "POST"], endpoint="reset_password_token"
 )
 def reset_password(token):
     return render_template("reset_password.html")
+
+
+@auth_bp.route("/manage_accounts", methods=["GET"], endpoint="manage_accounts")
+@login_required
+def manage_accounts():
+    users = User.query.all()
+    return render_template("manage_accounts.html", users=users)
+
+
+@auth_bp.route(
+    "/edit_user/<int:user_id>", methods=["GET", "POST"], endpoint="edit_user"
+)
+@auth_bp.route(
+    "/edit_user/<int:user_id>", methods=["GET", "POST"], endpoint="edit_user"
+)
+@login_required
+def edit_user(user_id):
+    user = User.query.get_or_404(user_id)
+    if request.method == "POST":
+        user.username = request.form["username"]
+        db.session.commit()
+        return jsonify(success=True)
+    return jsonify(success=False)
+
+
+@auth_bp.route(
+    "/reset_password_user/<int:user_id>",
+    methods=["POST"],
+    endpoint="reset_password_user",
+)
+@auth_bp.route(
+    "/reset_password_user/<int:user_id>",
+    methods=["GET", "POST"],
+    endpoint="reset_password_user",
+)
+@auth_bp.route(
+    "/reset_password_user/<int:user_id>",
+    methods=["POST"],
+    endpoint="reset_password_user",
+)
+@login_required
+def reset_password_user(user_id):
+    user = User.query.get_or_404(user_id)
+    new_password = request.form.get("new_password")
+    if new_password:
+        hashed_password = generate_password_hash(new_password, method="pbkdf2:sha256")
+        user.password = hashed_password
+        db.session.commit()
+        return jsonify(success=True)
+    return jsonify(success=False)
+
+
+@auth_bp.route("/delete_user/<int:user_id>", methods=["GET"], endpoint="delete_user")
+@login_required
+def delete_user(user_id):
+    user = User.query.get_or_404(user_id)
+    db.session.delete(user)
+    db.session.commit()
+    flash("User deleted successfully.", "success")
+    return redirect(url_for("auth.manage_accounts"))

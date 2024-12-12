@@ -20,6 +20,9 @@
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" href="{{ url_for('viewsc.admin_welcome') }}">Admin View</a>
+                    <a class="navbar-item" href="{{ url_for('viewsc.admin_welcome') }}">Home</a>
+                    <a class="navbar-item" href="{{ url_for('auth.manage_accounts') }}">Manage Accounts</a>
+                    <a class="navbar-item" href="{{ url_for('auth.createAccount') }}">Register User</a>
                 </div>
                 <div class="navbar-end">
                     <a class="navbar-item" href="{{ url_for('auth.logout') }}">Logout</a>
@@ -65,13 +68,11 @@
         </div>
     </section>
 
-    <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
     <script src="/static/maps.js"></script>
     <script>
-        // Additional admin-specific JavaScript can go here
     </script>
 </body>
 </html>

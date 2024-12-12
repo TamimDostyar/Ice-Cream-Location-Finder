@@ -80,7 +80,8 @@ html {
 
 /* Navigation Bar Styles */
 nav {
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: transparent;
+    /* Fully transparent background */
     color: white;
     padding: 10px 0;
     position: fixed;

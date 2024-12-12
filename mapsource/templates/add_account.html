@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>User Registration Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <style>
+        .button.is-small {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar is-dark">
+        <div class="container">
+            <div class="navbar-brand">
+                <div class="navbar-burger burger" data-target="navbarMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="{{ url_for('viewsc.edit_web') }}">Edit Explore</a>
+                    <a class="navbar-item" href="{{ url_for('viewsc.admin_welcome') }}">Home</a>
+                    <a class="navbar-item" href="{{ url_for('auth.manage_accounts') }}">Manage Accounts</a>
+                    <a class="navbar-item" href="#Register">Register User</a>
+
+                </div>
+                <div class="navbar-end">
+                    <a class="navbar-item" href="{{ url_for('auth.logout') }}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+
+    <section class="section">
+        <div class="container">
+            <h1 class="title">User Registration Form</h1>
+            <form method="post" action="{{ url_for('auth.register') }}">
+                <div class="field">
+                    <label class="label">Name</label>
+                    <div class="control">
+                        <input class="input" type="text" name="name" placeholder="Enter your name" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Username</label>
+                    <div class="control">
+                        <input class="input" type="text" name="username" placeholder="Enter your username" required>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Email</label>
+                    <div class="control">
+                        <input class="input" type="email" name="email" placeholder="Enter your email" required>
+                    </div>
+                </div>
+                <div class="field password-box">
+                    <div class="control">
+                        <input class="input" id="password" name="password" type="text" placeholder="Generated password" readonly>
+                    </div>
+                    <div class="control">
+                        <button class="button is-primary" type="button" onclick="generatePassword()">Generate Password</button>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="label">Account Type</label>
+                    <div class="control">
+                        <div class="select">
+                            <select name="is_admin" required>
+                                <option value="false">User</option>
+                                <option value="true">Admin</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button class="button is-link" type="submit">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <script>
+        function generatePassword() {
+            const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+            let password = "";
+            for (let i = 0; i < 12; i++) {
+                password += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            document.getElementById('password').value = password;
+        }
+    </script>
+</body>
+</html>
