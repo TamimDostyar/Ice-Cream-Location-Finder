@@ -42,7 +42,6 @@ def admin_view():
         "edit_web.html", icecreams=icecreams, current_user=current_user
     )
 
-
 @ice_cream_bp.route("/add_icecream_form", methods=["POST"])
 @login_required
 def add_icecream_form():
@@ -54,3 +53,23 @@ def add_icecream_form():
     db.session.add(new_icecream)
     db.session.commit()
     return redirect(url_for("ice_cream_bp.admin_view"))
+
+@ice_cream_bp.route("/edit_icecream/<int:id>", methods=["POST"])
+def edit_icecream(id):
+    data = request.get_json()
+    icecream = IceCream.query.get_or_404(id)
+    icecream.name = data["name"]
+    icecream.description = data["description"]
+    icecream.url = data["url"]
+    icecream.price = data["price"]
+    db.session.commit()
+    return redirect(url_for("ice_cream_bp.admin_view"))
+
+@ice_cream_bp.route("/delete_icecream/<int:id>", methods=["DELETE"])
+def delete_icecream(id):
+    icecream = IceCream.query.get_or_404(id)
+    db.session.delete(icecream)
+    db.session.commit()
+    return redirect(url_for("ice_cream_bp.admin_view"))
+
+

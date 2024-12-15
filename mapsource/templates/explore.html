@@ -3,34 +3,40 @@
 {% block title %}Explore Ice Creams{% endblock %}
 
 {% block content %}
-<div id="hero">
-    <div class="section">
-        <div class="container">
-            <div class="columns is-multiline">
-                {% for icecream in icecreams %}
-                <div class="column is-one-quarter">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src="{{ icecream.url }}" alt="{{ icecream.name }}">
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <div class="media">
-                                <div class="media-content">
-                                    <p class="title is-4">{{ icecream.name }}</p>
-                                </div>
-                            </div>
-                            <div class="content">
-                                <p>{{ icecream.description }}</p>
-                                <p><strong>${{ icecream.price }}</strong></p>
-                            </div>
+<section class="hero is-danger is-bold">
+    <div class="hero-body has-text-centered">
+      <div class="container">
+        <h1 class="title is-2">Welcome to the Ice Cream Explorer!</h1>
+        <p class="subtitle is-5">Sign in to find the nearest ice cream place and discover trending flavors!</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="columns is-multiline is-centered">
+        {% for icecream in icecreams %}
+        <div class="column is-one-quarter">
+            <div class="card">
+                <div class="card-image">
+                    <figure class="image is-4by3">
+                        <img src="{{ icecream.url }}" alt="{{ icecream.name }}">
+                    </figure>
+                </div>
+                <div class="card-content">
+                    <div class="media">
+                        <div class="media-content">
+                            <p class="title is-4">{{ icecream.name }}</p>
                         </div>
                     </div>
+                    <div class="content">
+                        <p>{{ icecream.description }}</p>
+                        <p><strong>${{ icecream.price }}</strong></p>
+                    </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
+        {% endfor %}
     </div>
-</div>
+  </section>
 {% endblock %}
