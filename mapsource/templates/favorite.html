@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Explore Ice Creams{% endblock %}
+
+{% block content %}
+    <h3 class="title is-4">Your Favorite Ice Cream Shops:</h3>
+    <div id="favorite-shops" class="columns is-multiline">
+        {% if favorites %}
+            {% for shop in favorites %}
+                <div class="column is-one-third" id="favorite-shop-{{ shop.id }}">
+                    <div class="card">
+                        <div class="card-image">
+                            <figure class="image is-4by3">
+                                <img src="{{ shop.image_url }}" alt="{{ shop.shop_name }}" class="is-rounded">
+                            </figure>
+                        </div>
+                        <div class="card-content">
+                            <p class="title is-4">{{ shop.shop_name }}</p>
+                            <p>{{ shop.address }}</p>
+                            <p>Rating: {{ shop.rating }} stars</p>
+                            <a href="{{ url_for('maps.remove_favorite', shop_id=shop.id, user_id=current_user.id) }}" class="button is-small is-primary">Remove from Favorite</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No favorite shops found.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}
