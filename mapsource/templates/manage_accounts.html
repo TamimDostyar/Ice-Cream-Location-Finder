@@ -67,8 +67,8 @@
                             <!-- Update the delete button to use JavaScript -->
                             <button class="button is-small is-danger" onclick="deleteUser({{ user.id }})">Delete</button>
                             <button class="button is-small toggle-admin-btn" 
-                                    onclick="toggleAdminStatus({{ user.id }}, {{ 'true' if user.is_admin else 'false' }}, this)">
-                                {{ 'Make User' if user.is_admin else 'Make Admin' }}
+                                    onclick="toggleAdminStatus({{ user.id }}, '{{ 'true' if user.is_admin else 'false' }}', this)">
+                                {{ 'Make Admin' if not user.is_admin else 'Change User' }}
                             </button>
                         </td>
                     </tr>
@@ -220,12 +220,22 @@
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    button.textContent = isAdmin ? 'Make Admin' : 'Make User';
-                    const flashMessage = isAdmin ? 'The status of the user has been changed successfully' : 'The status of the user has been changed successfully';
+                    // Dynamically update the button's text based on the new status
+                    if (newStatus === 'true') {
+                        button.textContent = 'Change User';  // Change text to "Change User" if now an admin
+                    } else {
+                        button.textContent = 'Make Admin';  // Change text back to "Make Admin" if no longer an admin
+                    }
+
+                    // Optionally, show a flash message for the admin status change
+                    const flashMessage = newStatus === 'true' ? 'User has been made an admin successfully' : 'User has been made a regular user successfully';
                     alert(flashMessage);
                 } else {
                     alert('Error updating admin status.');
                 }
+            })
+            .catch(error => {
+                alert('An error occurred while updating the user status.');
             });
         }
 
