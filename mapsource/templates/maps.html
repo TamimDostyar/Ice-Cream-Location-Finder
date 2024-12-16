@@ -8,16 +8,6 @@
     <link href="/static/style.css" rel="stylesheet">
     <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
-    <style>
-        .search-bar {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-        .search-bar .control {
-            margin-right: 0.5rem;
-        }
-    </style>
 </head>
 <body>
     <nav class="navbar is-dark">
@@ -56,12 +46,6 @@
         <div class="container">
             <div id="map" style="height: 500px;"></div>
             <div class="field has-addons" style="margin-top: 1rem;">
-                <p class="control">
-                    <input id="search-input" class="input" type="text" placeholder="Search city, state">
-                </p>
-                <p class="control">
-                    <button id="search-btn" class="button is-info">Search</button>
-                </p>
                 <p class="control">
                     <button id="find-me" class="button is-info">Find My Location</button>
                 </p>

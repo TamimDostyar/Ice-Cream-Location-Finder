@@ -1,4 +1,4 @@
-from flask import Blueprint, request, render_template, redirect, url_for, flash
+from flask import Blueprint, request, render_template, redirect, url_for, flash, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import (
     LoginManager,
@@ -179,3 +179,12 @@ def delete_user(user_id):
     db.session.commit()
     flash("User deleted successfully.", "success")
     return redirect(url_for("auth.manage_accounts"))
+
+@auth_bp.route("/toggle_admin_status/<int:user_id>", methods=["POST"], endpoint="toggle_admin_status")
+@login_required
+def toggle_admin_status(user_id):
+    user = User.query.get_or_404(user_id)
+    user.is_admin = request.form["is_admin"].lower() == "true"
+    db.session.commit()
+    return jsonify(success=True)
+

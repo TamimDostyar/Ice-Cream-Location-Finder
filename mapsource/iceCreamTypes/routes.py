@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, render_template, redirect, url_for
+from flask import Blueprint, request, jsonify, render_template, redirect, url_for, flash
 from .models import IceCream, db
 from flask_login import login_required, current_user
 
@@ -65,11 +65,12 @@ def edit_icecream(id):
     db.session.commit()
     return redirect(url_for("ice_cream_bp.admin_view"))
 
-@ice_cream_bp.route("/delete_icecream/<int:id>", methods=["DELETE"])
+@ice_cream_bp.route("/delete_icecream/<int:id>", methods=["POST"])
 def delete_icecream(id):
     icecream = IceCream.query.get_or_404(id)
     db.session.delete(icecream)
     db.session.commit()
+    flash('Ice cream deleted successfully!')
     return redirect(url_for("ice_cream_bp.admin_view"))
 
 

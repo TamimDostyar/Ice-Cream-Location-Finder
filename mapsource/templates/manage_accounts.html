@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Accounts</title>
     <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
     <style>
@@ -64,7 +64,12 @@
                         <td>
                             <button class="button is-small is-info" onclick="openEditModal({{ user.id }}, '{{ user.username }}')">Edit</button>
                             <button class="button is-small is-warning" onclick="openResetPasswordModal({{ user.id }})">Reset Password</button>
-                            <button class="button is-small is-danger" onclick="deleteUser({{ user.id }})">Delete</button>
+                            <form method="post" action="{{ url_for('auth.delete_user', user_id=user.id) }}" style="display:inline;">
+                                <button type="submit" class="button is-small is-danger" onclick="return confirm('Are you sure you want to delete this user?');">Delete</button>
+                            </form>
+                            <button class="button is-small" onclick="toggleAdminStatus({{ user.id }}, {{ user.is_admin }}, this)">
+                                {{ 'Make User' if user.is_admin else 'Make Admin' }}
+                            </button>
                         </td>
                     </tr>
                     {% endfor %}
@@ -195,8 +200,40 @@
 
         function deleteUser(userId) {
             if (confirm('Are you sure you want to delete this user?')) {
-                window.location.href = `/delete_user/${userId}`;
+                fetch(`/delete_user/${userId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                })
+                .then(response => {
+                    if (response.ok) {
+                        location.reload();
+                    } else {
+                        alert('Error deleting user.');
+                    }
+                });
             }
+        }
+
+        function toggleAdminStatus(userId, isAdmin, button) {
+            const newStatus = isAdmin ? 'false' : 'true';
+            fetch(`/toggle_admin_status/${userId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `is_admin=${newStatus}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    button.textContent = isAdmin ? 'Make Admin' : 'Make User';
+                    alert(`User has been ${isAdmin ? 'demoted to regular user' : 'promoted to admin'}.`);
+                } else {
+                    alert('Error updating admin status.');
+                }
+            });
         }
     </script>
 </body>
