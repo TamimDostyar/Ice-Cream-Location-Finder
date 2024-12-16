@@ -105,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function fetchIceCreamShops(city) {
         const API_KEY = "ZYCLMu7E4I28mgvHbILO4nJyehGiEu63YpxN1ig3ftP4P3P8V3b7Rw7xr38gd_gfNGI6CHtCl59wVfmLVNF0oht5HMK9G2gGhTYCNFi1hUUhxBxj1GZhJ25XK5NYZ3Yx";
         const YELP_API_URL = "https://api.yelp.com/v3/businesses/search";
-
+    
         axios.get(YELP_API_URL, {
             headers: {
                 Authorization: `Bearer ${API_KEY}`
@@ -127,14 +127,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 } else {
                     const columns = document.createElement("div");
                     columns.className = "columns is-multiline";
-
+    
                     shops.forEach(shop => {
                         const column = document.createElement("div");
                         column.className = "column is-one-third";
-
+    
                         const card = document.createElement("div");
                         card.className = "card";
-
+    
                         const cardImage = document.createElement("div");
                         cardImage.className = "card-image";
                         const figure = document.createElement("figure");
@@ -143,11 +143,11 @@ document.addEventListener("DOMContentLoaded", function () {
                         img.src = shop.image_url || 'https://media.istockphoto.com/id/957740086/photo/boy-share-ice-cream-with-his-sister.jpg?s=612x612&w=0&k=20&c=4j5yubH5Ggv0Cfwk7gYrFOYb0XMFTBww477JIaRn5_s=';
                         img.alt = shop.name;
                         img.classList.add("is-rounded");
-
+    
                         figure.appendChild(img);
                         cardImage.appendChild(figure);
                         card.appendChild(cardImage);
-
+    
                         const cardContent = document.createElement("div");
                         cardContent.className = "card-content";
                         const title = document.createElement("p");
@@ -157,19 +157,27 @@ document.addEventListener("DOMContentLoaded", function () {
                         address.innerText = shop.location.display_address.join(', ');
                         const rating = document.createElement("p");
                         rating.innerText = `Rating: ${shop.rating} stars`;
-
+    
+                        const favoriteButton = document.createElement("button");
+                        favoriteButton.className = "button is-info mt-2";
+                        favoriteButton.innerText = "Add to Favorites";
+                        favoriteButton.addEventListener("click", function () {
+                            addToFavorites(shop);
+                        });
+    
                         cardContent.appendChild(title);
                         cardContent.appendChild(address);
                         cardContent.appendChild(rating);
+                        cardContent.appendChild(favoriteButton);
                         card.appendChild(cardContent);
-
+    
                         column.appendChild(card);
                         columns.appendChild(column);
-
+    
                         L.marker([shop.coordinates.latitude, shop.coordinates.longitude]).addTo(map)
                             .bindPopup(`${shop.name}<br>${shop.location.display_address.join(', ')}`);
                     });
-
+    
                     shopList.appendChild(columns);
                 }
                 shopList.style.display = 'block';
@@ -178,10 +186,48 @@ document.addEventListener("DOMContentLoaded", function () {
                 console.error('Error fetching ice cream shops:', error);
             });
     }
+    
 
     document.getElementById('find-me').addEventListener('click', findLocation);
     document.getElementById('find-shops').addEventListener('click', function () {
         fetchIceCreamShops(currentCity);
     });
     document.getElementById('search-btn').addEventListener('click', searchCity);
+
+    function addToFavorites(shop) {
+        axios.post('/add_favorite', {
+            title: shop.name,
+            location: shop.location.display_address.join(', '), 
+            url: shop.url,
+            rating: shop.rating
+        })
+        .then(response => {
+            if (response.data.success) {
+                showMessage(`"${shop.name}" has been added to your favorites!`, 'is-success');
+            } else {
+                showMessage('Failed to add the shop to favorites.', 'is-danger');
+            }
+        })
+        .catch(error => {
+            if (error.response && error.response.data.message) {
+                showMessage(error.response.data.message, 'is-danger');
+            } else {
+                console.error('Error adding favorite:', error);
+                showMessage('An error occurred while adding the shop to favorites.', 'is-danger');
+            }
+        });
+    }
+    
+
+    function showMessage(message, type = 'is-success') {
+        const messageArea = document.getElementById('message-area');
+        messageArea.innerText = message;
+        messageArea.className = `notification ${type}`;
+        messageArea.style.display = 'block';
+    
+        setTimeout(() => {
+            messageArea.style.display = 'none';
+        }, 5000);
+    }
+    
 });
