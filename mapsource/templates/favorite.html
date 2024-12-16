@@ -1,8 +1,36 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=2.0">
+    <title>User Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" rel="stylesheet">
+    <link href="/static/style.css" rel="stylesheet">
+    <link href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.css">
+</head>
+<body>
+    <nav class="navbar is-dark">
+        <div class="container">
+            <div class="navbar-brand">
+                <div class="navbar-burger burger" data-target="navbarMenu">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+            <div id="navbarMenu" class="navbar-menu">
+                <div class="navbar-start">
+                    <a class="navbar-item" href="{{ url_for('viewsc.maps_view') }}">Home</a>
+                    <a class="navbar-item" href="{{ url_for('viewsc.favorite_view') }}">Favorit</a>
+                </div>
+                <div class="navbar-end">
+                    <a class="navbar-item" href="{{ url_for('auth.logout') }}">Logout</a>
+                </div>
+            </div>
+        </div>
+    </nav>
 
-{% block title %}Explore Ice Creams{% endblock %}
-
-{% block content %}
     <h3 class="title is-4">Your Favorite Ice Cream Shops:</h3>
     <div id="favorite-shops" class="columns is-multiline">
         {% if favorites %}
@@ -11,7 +39,7 @@
                     <div class="card">
                         <div class="card-image">
                             <figure class="image is-4by3">
-                                <img src="{{ shop.url }}" alt="{{ shop.title }}" class="is-rounded"> 
+                                <img src="{{ shop.image_url }}" alt="{{ shop.title }}" class="is-rounded"> 
                             </figure>
                         </div>
                         <div class="card-content">
@@ -27,4 +55,5 @@
             <p>No favorite shops found.</p>
         {% endif %}
     </div>
-{% endblock %}
+</body>
+</html>

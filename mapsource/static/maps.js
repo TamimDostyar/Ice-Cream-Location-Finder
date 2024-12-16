@@ -192,13 +192,12 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById('find-shops').addEventListener('click', function () {
         fetchIceCreamShops(currentCity);
     });
-    document.getElementById('search-btn').addEventListener('click', searchCity);
 
     function addToFavorites(shop) {
         axios.post('/add_favorite', {
             title: shop.name,
             location: shop.location.display_address.join(', '), 
-            url: shop.url,
+            url: shop.image_url || 'https://media.istockphoto.com/id/957740086/photo/boy-share-ice-cream-with-his-sister.jpg?s=612x612&w=0&k=20&c=4j5yubH5Ggv0Cfwk7gYrFOYb0XMFTBww477JIaRn5_s=',
             rating: shop.rating
         })
         .then(response => {
