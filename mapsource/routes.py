@@ -39,6 +39,7 @@ def maps_view():
 def favorite_view():
     user_id = current_user.id
     favorites = Favorit_store.query.filter_by(user_id=user_id).all()
+    print(favorites)
     return render_template("favorite.html", favorites=favorites)
 
 @bp.route('/add_favorite', methods=['POST'])
