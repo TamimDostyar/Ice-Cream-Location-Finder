@@ -1,4 +1,4 @@
-from flask import Blueprint, redirect, url_for, render_template
+from flask import Blueprint, redirect, url_for, render_template,Flask, request, jsonify
 from flask_login import login_required, current_user
 from .iceCreamTypes.models import IceCream
 from .loginP.models import Favorit_store, db  
@@ -41,6 +41,31 @@ def favorite_view():
     favorites = Favorit_store.query.filter_by(user_id=user_id).all()
     return render_template("favorite.html", favorites=favorites)
 
+@bp.route('/add_favorite', methods=['POST'])
+def add_favorite():
+    data = request.json
+    user_id = current_user.id
+
+    existing_favorite = Favorit_store.query.filter_by(
+        title=data['title'],
+        user_id=user_id
+    ).first()
+
+    if existing_favorite:
+        return jsonify({'message': 'This shop is already in your favorites!'}), 400
+
+    favorite = Favorit_store(
+        title=data['title'],
+        location=data['location'],
+        url=data['url'],
+        rating=data['rating'],
+        user_id=user_id
+    )
+    db.session.add(favorite)
+    db.session.commit()
+
+    return jsonify({'message': 'Favorite added successfully!'}), 200
+
 @bp.route("/remove-favorite/<int:shop_id>/<int:user_id>/", methods=["GET"])
 @login_required
 def remove_favorite(shop_id, user_id):
@@ -51,7 +76,7 @@ def remove_favorite(shop_id, user_id):
     if favorite_shop:
         db.session.delete(favorite_shop)
         db.session.commit()
-        return redirect(url_for('maps.maps_view'))
+        return redirect(url_for('viewsc.favorite_view'))
     else:
         return "Error: Shop not found or not a favorite of the user", 404
 
