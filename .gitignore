@@ -13,3 +13,6 @@ __pycache__/
 **/__pycache__/
 tree --gitignore
 .DS_Store
+.instance/
+.instance/map-database.db
+/instance/map-database.db
