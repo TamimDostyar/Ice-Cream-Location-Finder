@@ -31,29 +31,33 @@
         </div>
     </nav>
 
-    <h3 class="title is-4">Your Favorite Ice Cream Shops:</h3>
-    <div id="favorite-shops" class="columns is-multiline">
-        {% if favorites %}
-            {% for shop in favorites %}
-                <div class="column is-one-third" id="favorite-shop-{{ shop.id }}">
-                    <div class="card">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                                <img src="{{ shop.image_url }}" alt="{{ shop.title }}" class="is-rounded"> 
-                            </figure>
+    <section class="section">
+        <div class="container">
+            <h3 class="title is-4">Your Favorite Ice Cream Shops:</h3>
+            <div id="favorite-shops" class="columns is-multiline is-centered">
+                {% if favorites %}
+                    {% for shop in favorites %}
+                        <div class="column is-one-third" id="favorite-shop-{{ shop.id }}">
+                            <div class="card">
+                                <div class="card-image">
+                                    <figure class="image is-4by3">
+                                        <img src="{{ shop.url }}" alt="{{ shop.title }}" class="is-rounded"> 
+                                    </figure>
+                                </div>
+                                <div class="card-content">
+                                    <p class="title is-4">{{ shop.title }}</p>
+                                    <p>{{ shop.location }}</p>
+                                    <p>Rating: {{ shop.rating }} stars</p>
+                                    <a href="{{ url_for('viewsc.remove_favorite', shop_id=shop.id, user_id=current_user.id) }}" class="button is-small is-primary">Remove from Favorite</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="card-content">
-                            <p class="title is-4">{{ shop.title }}</p>
-                            <p>{{ shop.location }}</p>
-                            <p>Rating: {{ shop.rating }} stars</p>
-                            <a href="{{ url_for('viewsc.remove_favorite', shop_id=shop.id, user_id=current_user.id) }}" class="button is-small is-primary">Remove from Favorite</a>
-                        </div>
-                    </div>
-                </div>
-            {% endfor %}
-        {% else %}
-            <p>No favorite shops found.</p>
-        {% endif %}
-    </div>
+                    {% endfor %}
+                {% else %}
+                    <p>No favorite shops found.</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
 </body>
 </html>

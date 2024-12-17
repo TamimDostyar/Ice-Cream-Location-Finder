@@ -1,7 +1,8 @@
 from flask import Blueprint, redirect, url_for, render_template,Flask, request, jsonify
 from flask_login import login_required, current_user
 from .iceCreamTypes.models import IceCream
-from .loginP.models import Favorit_store, db  
+from .loginP.models import Favorit_store, User, db
+from collections import defaultdict
 
 bp = Blueprint(
     "viewsc",
@@ -39,7 +40,6 @@ def maps_view():
 def favorite_view():
     user_id = current_user.id
     favorites = Favorit_store.query.filter_by(user_id=user_id).all()
-    print(favorites)
     return render_template("favorite.html", favorites=favorites)
 
 @bp.route('/add_favorite', methods=['POST'])
@@ -89,6 +89,7 @@ def edit_web():
     return render_template("edit_web.html", current_user=current_user, icecreams=icecreams)
 
 
+
 @bp.route("/continue_as_user", methods=["GET"], endpoint="continue_as_user")
 @login_required
 def continue_as_user():
@@ -99,3 +100,37 @@ def continue_as_user():
 @login_required
 def admin_welcome():
     return render_template("admin_welcome.html", current_user=current_user)
+
+@bp.route('/favorites')
+def list_favorite_stores():
+    results = db.session.query(
+        Favorit_store.title,
+        Favorit_store.location,
+        Favorit_store.url,
+        Favorit_store.rating,
+        User.username,
+        User.email
+    ).join(User, Favorit_store.user_id == User.id).all()
+
+    stores_with_users = {}
+
+    for title, location, url, rating, username, email in results:
+        store_key = (title, location, rating)
+
+        if store_key not in stores_with_users:
+            stores_with_users[store_key] = {
+                "title": title,
+                "location": location,
+                "url": url,
+                "rating": rating,
+                "users": []
+            }
+
+        stores_with_users[store_key]['users'].append({
+            "username": username,
+            "email": email
+        })
+
+    grouped_stores = list(stores_with_users.values())
+    return render_template('listoffavorites.html', stores=grouped_stores)
+

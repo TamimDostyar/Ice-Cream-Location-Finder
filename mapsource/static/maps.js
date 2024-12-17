@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         favoriteButton.className = "button is-info mt-2";
                         favoriteButton.innerText = "Add to Favorites";
                         favoriteButton.addEventListener("click", function () {
-                            addToFavorites(shop);
+                            addToFavorites(shop, favoriteButton);
                         });
     
                         cardContent.appendChild(title);
@@ -193,7 +193,7 @@ document.addEventListener("DOMContentLoaded", function () {
         fetchIceCreamShops(currentCity);
     });
 
-    function addToFavorites(shop) {
+    function addToFavorites(shop, button) {
         axios.post('/add_favorite', {
             title: shop.name,
             location: shop.location.display_address.join(', '), 
@@ -201,32 +201,18 @@ document.addEventListener("DOMContentLoaded", function () {
             rating: shop.rating
         })
         .then(response => {
-            if (response.data.success) {
-                showMessage(`"${shop.name}" has been added to your favorites!`, 'is-success');
+            console.log(response)
+            if (response.status === 200 && response.data.message === "Favorite added successfully!") {
+                button.innerText = "Added";
+                button.classList.remove("is-info");
+                button.classList.add("is-success");
+                button.disabled = true;
             } else {
-                showMessage('Failed to add the shop to favorites.', 'is-danger');
+                console.error('Failed to add the shop to favorites.');
             }
         })
         .catch(error => {
-            if (error.response && error.response.data.message) {
-                showMessage(error.response.data.message, 'is-danger');
-            } else {
-                console.error('Error adding favorite:', error);
-                showMessage('An error occurred while adding the shop to favorites.', 'is-danger');
-            }
+            console.error('Error adding favorite:', error);
         });
-    }
-    
-
-    function showMessage(message, type = 'is-success') {
-        const messageArea = document.getElementById('message-area');
-        messageArea.innerText = message;
-        messageArea.className = `notification ${type}`;
-        messageArea.style.display = 'block';
-    
-        setTimeout(() => {
-            messageArea.style.display = 'none';
-        }, 5000);
-    }
-    
+    } 
 });

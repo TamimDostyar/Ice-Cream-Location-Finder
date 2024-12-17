@@ -22,7 +22,7 @@
             <div id="navbarMenu" class="navbar-menu">
                 <div class="navbar-start">
                     <a class="navbar-item" href="{{ url_for('viewsc.edit_web') }}">Edit Explore</a>
-                    <a class="navbar-item" href="#home">Home</a>
+                    <a class="navbar-item" href="{{ url_for('viewsc.admin_welcome') }}">Home</a>
                     <a class="navbar-item" href="{{ url_for('auth.manage_accounts') }}">Manage Accounts</a>
                     <a class="navbar-item" href="{{ url_for('auth.createAccount') }}">Register User</a>
                     <a class="navbar-item" href="{{ url_for('viewsc.list_favorite_stores') }}">List of Favorite Stores</a>
@@ -34,32 +34,36 @@
         </div>
     </nav>
 
-    <section class="section">
-        <div class="container">
-            <div class="box">
-                <h1 class="title">Welcome, {{ current_user.username }}!</h1>
-                <p>You are now logged in as an admin</p>
-            </div>
-        </div>
-    </section>
+    <body>
 
-    <section class="section">
-        <div class="container">
-            <div id="map" style="height: 500px;"></div>
-            <div class="field has-addons">
-                <p class="control">
-                    <button id="find-me" class="button is-info">Find My Location</button>
-                </p>
-                <p class="control">
-                    <button id="find-shops" class="button is-primary">Find Ice Cream Shops</button>
-                </p>
+        <section class="section">
+            <div class="container">
+                <h1 class="title has-text-centered mb-5">Favorite Stores</h1>
+                <div class="columns is-centered">
+                    <div class="column is-8">
+                        {% if stores %}
+                        {% for store in stores %}
+                            <div class="card mb-4">
+                                <div class="card-content">
+                                    <p class="title is-4">{{ store.title }}</p>
+                                    <p class="subtitle is-6">{{ store.location }}</p>
+                                    <p>Users:</p>
+                                    <ul>
+                                        {% for user in store.users %}
+                                            <li>{{ user.username }} ({{ user.email }})</li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <p class="has-text-centered">No favorite shops found.</p>
+                    {% endif %}
+                    </div>
+                </div>
             </div>
-            <div id="location-info" class="box" style="display: none; margin-top: 20px;"></div>
-            <div id="shop-list" class="box" style="display: none; margin-top: 20px;"></div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Scripts -->
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <script src="https://unpkg.com/leaflet-routing-machine/dist/leaflet-routing-machine.js"></script>
