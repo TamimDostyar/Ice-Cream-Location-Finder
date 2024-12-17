@@ -1,7 +1,5 @@
-ALL APIs
-
 admin:
-username: dostah01
+username: tamimdostyar
 pw: 0000
 
 
@@ -9,13 +7,6 @@ regular:
 janik
 1111
 
-
-Client ID
-
-6caJj5eWPLKACOGZHPCI6w
-API Key
-
-ZYCLMu7E4I28mgvHbILO4nJyehGiEu63YpxN1ig3ftP4P3P8V3b7Rw7xr38gd_gfNGI6CHtCl59wVfmLVNF0oht5HMK9G2gGhTYCNFi1hUUhxBxj1GZhJ25XK5NYZ3Yx
 
 
 
