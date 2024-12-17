@@ -171,20 +171,26 @@ def reset_password_user(user_id):
     return jsonify(success=False)
 
 
-@auth_bp.route("/delete_user/<int:user_id>", methods=["GET"], endpoint="delete_user")
+
+@auth_bp.route("/delete_user/<int:user_id>", methods=["POST"], endpoint="delete_user")
 @login_required
 def delete_user(user_id):
-    user = User.query.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
-    flash("User deleted successfully.", "success")
-    return redirect(url_for("auth.manage_accounts"))
+    if request.form.get('_method') == 'DELETE':
+        user = User.query.get_or_404(user_id)
+        db.session.delete(user)
+        db.session.commit()
+        flash("User deleted successfully.", "success")
+        return redirect(url_for("auth.manage_accounts"))
+    return jsonify(success=False), 405
+
+
 
 @auth_bp.route("/toggle_admin_status/<int:user_id>", methods=["POST"], endpoint="toggle_admin_status")
 @login_required
 def toggle_admin_status(user_id):
     user = User.query.get_or_404(user_id)
-    user.is_admin = request.form["is_admin"].lower() == "true"
-    db.session.commit()
-    return jsonify(success=True)
+    is_admin = request.form["is_admin"].lower() == "true"  # Convert string to boolean
+    user.is_admin = is_admin  # Update the user's admin status
+    db.session.commit()  # Commit the change to the database
+    return jsonify(success=True)  # Return a JSON response indicating success
 
